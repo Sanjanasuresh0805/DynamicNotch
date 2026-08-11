@@ -1,0 +1,159 @@
+<Window x:Class="DynamicNotch.Views.SettingsWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="DynamicNotch Settings"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent"
+        ResizeMode="NoResize"
+        Width="400" Height="360"
+        WindowStartupLocation="CenterOwner"
+        Topmost="True"
+        MouseLeftButtonDown="Window_MouseLeftButtonDown">
+
+    <Border CornerRadius="20" Padding="28">
+        <Border.Background>
+            <SolidColorBrush Color="#FF1C1C1E" />
+        </Border.Background>
+        <Border.Effect>
+            <DropShadowEffect Color="Black" BlurRadius="30" ShadowDepth="4" Opacity="0.5" />
+        </Border.Effect>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="*" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Margin="0,0,0,20">
+                <TextBlock Text="Settings"
+                           Foreground="White"
+                           FontSize="20" FontWeight="Bold"
+                           FontFamily="Segoe UI"
+                           VerticalAlignment="Center" />
+                <Button HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Click="Close_Click"
+                        Cursor="Hand"
+                        Width="28" Height="28">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="bg" CornerRadius="14" Background="#33FFFFFF">
+                                <TextBlock Text="&#xE711;"
+                                           FontFamily="Segoe MDL2 Assets"
+                                           FontSize="10"
+                                           Foreground="#AAFFFFFF"
+                                           HorizontalAlignment="Center"
+                                           VerticalAlignment="Center" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="bg" Property="Background" Value="#55FFFFFF" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+
+            <StackPanel Grid.Row="1">
+                <Border Background="#FF2C2C2E" CornerRadius="12" Padding="16,12" Margin="0,0,0,8">
+                    <Grid>
+                        <StackPanel VerticalAlignment="Center">
+                            <TextBlock Text="Run at startup"
+                                       Foreground="White"
+                                       FontSize="14"
+                                       FontFamily="Segoe UI" />
+                            <TextBlock Text="Launch DynamicNotch when Windows starts"
+                                       Foreground="#77FFFFFF"
+                                       FontSize="11"
+                                       FontFamily="Segoe UI"
+                                       Margin="0,2,0,0" />
+                        </StackPanel>
+                        <CheckBox x:Name="StartupCheckBox"
+                                  HorizontalAlignment="Right"
+                                  VerticalAlignment="Center"
+                                  Checked="StartupCheckBox_Changed"
+                                  Unchecked="StartupCheckBox_Changed" />
+                    </Grid>
+                </Border>
+
+                <Border Background="#FF2C2C2E" CornerRadius="12" Padding="16,12" Margin="0,0,0,8">
+                    <Grid>
+                        <TextBlock Text="Show media controls"
+                                   Foreground="White"
+                                   FontSize="14"
+                                   FontFamily="Segoe UI"
+                                   VerticalAlignment="Center" />
+                        <CheckBox x:Name="MediaCheckBox"
+                                  HorizontalAlignment="Right"
+                                  VerticalAlignment="Center"
+                                  IsChecked="True" />
+                    </Grid>
+                </Border>
+
+                <Border Background="#FF2C2C2E" CornerRadius="12" Padding="16,12" Margin="0,0,0,8">
+                    <Grid>
+                        <TextBlock Text="Show calendar"
+                                   Foreground="White"
+                                   FontSize="14"
+                                   FontFamily="Segoe UI"
+                                   VerticalAlignment="Center" />
+                        <CheckBox x:Name="CalendarCheckBox"
+                                  HorizontalAlignment="Right"
+                                  VerticalAlignment="Center"
+                                  IsChecked="True" />
+                    </Grid>
+                </Border>
+
+                <Border Background="#FF2C2C2E" CornerRadius="12" Padding="16,12" Margin="0,0,0,8">
+                    <Grid>
+                        <TextBlock Text="Show mirror button"
+                                   Foreground="White"
+                                   FontSize="14"
+                                   FontFamily="Segoe UI"
+                                   VerticalAlignment="Center" />
+                        <CheckBox x:Name="MirrorCheckBox"
+                                  HorizontalAlignment="Right"
+                                  VerticalAlignment="Center"
+                                  IsChecked="True" />
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+            <StackPanel Grid.Row="2" Margin="0,12,0,0">
+                <TextBlock Text="DynamicNotch v1.0"
+                           Foreground="#55FFFFFF"
+                           FontSize="11"
+                           HorizontalAlignment="Center"
+                           FontFamily="Segoe UI" />
+
+                <Button Margin="0,12,0,0"
+                        Click="Quit_Click"
+                        Cursor="Hand"
+                        HorizontalAlignment="Center">
+                    <Button.Template>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="bg" CornerRadius="8"
+                                    Background="#33FF453A"
+                                    Padding="16,8">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="bg" Property="Background" Value="#55FF453A" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Button.Template>
+                    <TextBlock Text="Quit DynamicNotch"
+                               Foreground="#FFFF453A"
+                               FontSize="12"
+                               FontFamily="Segoe UI" />
+                </Button>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>
