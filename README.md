@@ -22,27 +22,6 @@ to reveal media controls, a live calendar, weather, battery status, camera mirro
 
 </div>
 
----
-╲ ╱
-╲___ 🎵 [Album Art] 11:37 AM ▮▮▮ ___╱
-
-text
-
-
-### Expanded State
-╲ ╱
-╲____________________________________________________________________________╱
-│ │
-│ 🎵 Album Song Title Aug S M T W T F S 29°C 🔋100% ⚙ │
-│ Art Artist Name 09 10 11 ⓬ 13 14 15 │
-│ ⏮ ▶ ⏭ 📅 Intl. Youth Day 📷 Mirror │
-│ │
-╰────────────────────────────────────────────────────────────────────────────╯
-
-text
-
-
----
 
 ## ✨ Features
 
