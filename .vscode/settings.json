@@ -1,0 +1,16 @@
+{
+    "dotnet.autoRestore.enabled": false,
+    "dotnet.backgroundAnalysis.analyzerDiagnosticsScope": "openFiles",
+    "dotnet.backgroundAnalysis.compilerDiagnosticsScope": "openFiles",
+    "omnisharp.enableMsBuildLoadProjectsOnDemand": true,
+    "files.exclude": {
+        "**/bin": true,
+        "**/obj": true,
+        "**/*_wpftmp.csproj": true
+    },
+    "files.watcherExclude": {
+        "**/bin/**": true,
+        "**/obj/**": true,
+        "**/*_wpftmp.*": true
+    }
+}

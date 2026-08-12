@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DynamicNotch")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cde39d3f2a7e5b8682874ea85d4b69c9eea51994")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+0f0ad6155115c656f6def361ab5fac58aa75d52e")]
 [assembly: System.Reflection.AssemblyProductAttribute("DynamicNotch")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DynamicNotch")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

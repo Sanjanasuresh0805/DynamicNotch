@@ -4,130 +4,121 @@
              StartupUri="Views/IslandWindow.xaml"
              ShutdownMode="OnExplicitShutdown">
     <Application.Resources>
+        <ResourceDictionary>
+            <Color x:Key="IslandBackground">#FF1A1A1E</Color>
+            <Color x:Key="IslandBackgroundLight">#FF2A2A2E</Color>
+            <Color x:Key="AccentBlue">#FF007AFF</Color>
+            <Color x:Key="AccentGreen">#FF30D158</Color>
+            <Color x:Key="AccentRed">#FFFF453A</Color>
+            <Color x:Key="TextPrimary">#FFFFFFFF</Color>
+            <Color x:Key="TextSecondary">#99FFFFFF</Color>
+            <Color x:Key="TextTertiary">#55FFFFFF</Color>
+            <Color x:Key="SurfaceDark">#FF2C2C2E</Color>
+            <Color x:Key="SurfaceMedium">#FF3A3A3C</Color>
 
-        <!-- ══ COLORS ══ -->
-        <Color x:Key="IslandBackgroundColor">#FF000000</Color>
-        <Color x:Key="AccentBlueColor">#FF007AFF</Color>
-        <Color x:Key="AccentGreenColor">#FF30D158</Color>
-        <Color x:Key="AccentRedColor">#FFFF453A</Color>
-        <Color x:Key="SurfaceDarkColor">#FF1C1C1E</Color>
-        <Color x:Key="SurfaceMediumColor">#FF2C2C2E</Color>
-        <Color x:Key="TextPrimaryColor">#FFFFFFFF</Color>
-        <Color x:Key="TextSecondaryColor">#FF8E8E93</Color>
-        <Color x:Key="TextTertiaryColor">#FF636366</Color>
+            <SolidColorBrush x:Key="IslandBackgroundBrush" Color="{StaticResource IslandBackground}" />
+            <SolidColorBrush x:Key="IslandBackgroundLightBrush" Color="{StaticResource IslandBackgroundLight}" />
+            <SolidColorBrush x:Key="AccentBlueBrush" Color="{StaticResource AccentBlue}" />
+            <SolidColorBrush x:Key="AccentGreenBrush" Color="{StaticResource AccentGreen}" />
+            <SolidColorBrush x:Key="AccentRedBrush" Color="{StaticResource AccentRed}" />
+            <SolidColorBrush x:Key="TextPrimaryBrush" Color="{StaticResource TextPrimary}" />
+            <SolidColorBrush x:Key="TextSecondaryBrush" Color="{StaticResource TextSecondary}" />
+            <SolidColorBrush x:Key="TextTertiaryBrush" Color="{StaticResource TextTertiary}" />
+            <SolidColorBrush x:Key="SurfaceDarkBrush" Color="{StaticResource SurfaceDark}" />
+            <SolidColorBrush x:Key="SurfaceMediumBrush" Color="{StaticResource SurfaceMedium}" />
 
-        <!-- ══ BRUSHES ══ -->
-        <SolidColorBrush x:Key="IslandBackground"   Color="{StaticResource IslandBackgroundColor}"/>
-        <SolidColorBrush x:Key="AccentBlue"         Color="{StaticResource AccentBlueColor}"/>
-        <SolidColorBrush x:Key="AccentGreen"        Color="{StaticResource AccentGreenColor}"/>
-        <SolidColorBrush x:Key="AccentRed"          Color="{StaticResource AccentRedColor}"/>
-        <SolidColorBrush x:Key="SurfaceDark"        Color="{StaticResource SurfaceDarkColor}"/>
-        <SolidColorBrush x:Key="SurfaceMedium"      Color="{StaticResource SurfaceMediumColor}"/>
-        <SolidColorBrush x:Key="TextPrimary"        Color="{StaticResource TextPrimaryColor}"/>
-        <SolidColorBrush x:Key="TextSecondary"      Color="{StaticResource TextSecondaryColor}"/>
-        <SolidColorBrush x:Key="TextTertiary"       Color="{StaticResource TextTertiaryColor}"/>
+            <Style x:Key="MediaButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Padding" Value="6" />
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="FontFamily" Value="Segoe MDL2 Assets" />
+                <Setter Property="FontSize" Value="14" />
+                <Setter Property="Width" Value="32" />
+                <Setter Property="Height" Value="32" />
+                <Setter Property="RenderTransformOrigin" Value="0.5,0.5" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="bg" Background="{TemplateBinding Background}"
+                                    CornerRadius="16"
+                                    Padding="{TemplateBinding Padding}">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="bg" Property="Background" Value="#33FFFFFF" />
+                                </Trigger>
+                                <Trigger Property="IsPressed" Value="True">
+                                    <Setter TargetName="bg" Property="Background" Value="#22FFFFFF" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
 
-        <!-- ══ CONVERTERS ══ -->
-        <BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter"/>
+            <!-- ══ MIRROR BUTTON STYLE (perfect circle) ══ -->
+<Style x:Key="MirrorButtonStyle" TargetType="Button">
+    <Setter Property="Background"  Value="#FF2C2C2E"/>
+    <Setter Property="BorderBrush" Value="Transparent"/>
+    <Setter Property="Cursor"      Value="Hand"/>
+    <Setter Property="Padding"     Value="0"/>
+    <Setter Property="Template">
+        <Setter.Value>
+            <ControlTemplate TargetType="Button">
+                <!-- Use an Ellipse as background for a guaranteed perfect circle -->
+                <Grid>
+                    <Ellipse x:Name="Bd"
+                             Fill="{TemplateBinding Background}"
+                             Width="{TemplateBinding Width}"
+                             Height="{TemplateBinding Height}"/>
+                    <ContentPresenter HorizontalAlignment="Center"
+                                      VerticalAlignment="Center"/>
+                </Grid>
+                <ControlTemplate.Triggers>
+                    <Trigger Property="IsMouseOver" Value="True">
+                        <Setter TargetName="Bd" Property="Fill"
+                                Value="#FF3A3A3C"/>
+                    </Trigger>
+                    <Trigger Property="IsPressed" Value="True">
+                        <Setter TargetName="Bd" Property="Fill"
+                                Value="#FF48484A"/>
+                    </Trigger>
+                </ControlTemplate.Triggers>
+            </ControlTemplate>
+        </Setter.Value>
+    </Setter>
+</Style>
 
-        <!-- ══ MEDIA BUTTON STYLE ══ -->
-        <Style x:Key="MediaButtonStyle" TargetType="Button">
-            <Setter Property="Background"   Value="Transparent"/>
-            <Setter Property="BorderBrush"  Value="Transparent"/>
-            <Setter Property="Foreground"   Value="White"/>
-            <Setter Property="Cursor"       Value="Hand"/>
-            <Setter Property="Padding"      Value="0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="Bd"
-                                Background="{TemplateBinding Background}"
-                                CornerRadius="11"
-                                Width="{TemplateBinding Width}"
-                                Height="{TemplateBinding Height}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background"
-                                        Value="#22FFFFFF"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Bd" Property="Background"
-                                        Value="#44FFFFFF"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+            <Style x:Key="SettingsButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="Transparent" />
+                <Setter Property="Foreground" Value="{StaticResource TextSecondaryBrush}" />
+                <Setter Property="BorderThickness" Value="0" />
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Width" Value="28" />
+                <Setter Property="Height" Value="28" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border x:Name="bg" Background="{TemplateBinding Background}"
+                                    CornerRadius="14">
+                                <ContentPresenter HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter Property="Foreground" Value="{StaticResource TextPrimaryBrush}" />
+                                    <Setter TargetName="bg" Property="Background" Value="#22FFFFFF" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
 
-        <!-- ══ MIRROR BUTTON STYLE ══ -->
-        <Style x:Key="MirrorButtonStyle" TargetType="Button">
-            <Setter Property="Background"  Value="#FF2C2C2E"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="Cursor"      Value="Hand"/>
-            <Setter Property="Padding"     Value="0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="Bd"
-                                Background="{TemplateBinding Background}"
-                                CornerRadius="29"
-                                Width="{TemplateBinding Width}"
-                                Height="{TemplateBinding Height}"
-                                ClipToBounds="True">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background"
-                                        Value="#FF3A3A3C"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Bd" Property="Background"
-                                        Value="#FF48484A"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
-        <!-- ══ SETTINGS BUTTON STYLE ══ -->
-        <Style x:Key="SettingsButtonStyle" TargetType="Button">
-            <Setter Property="Background"  Value="Transparent"/>
-            <Setter Property="BorderBrush" Value="Transparent"/>
-            <Setter Property="Foreground"  Value="#FF8E8E93"/>
-            <Setter Property="Cursor"      Value="Hand"/>
-            <Setter Property="Padding"     Value="0"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="Button">
-                        <Border x:Name="Bd"
-                                Background="{TemplateBinding Background}"
-                                CornerRadius="11"
-                                Width="{TemplateBinding Width}"
-                                Height="{TemplateBinding Height}">
-                            <ContentPresenter HorizontalAlignment="Center"
-                                              VerticalAlignment="Center"/>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="IsMouseOver" Value="True">
-                                <Setter TargetName="Bd" Property="Background"
-                                        Value="#22FFFFFF"/>
-                            </Trigger>
-                            <Trigger Property="IsPressed" Value="True">
-                                <Setter TargetName="Bd" Property="Background"
-                                        Value="#44FFFFFF"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

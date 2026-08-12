@@ -192,6 +192,14 @@ namespace DynamicNotch.ViewModels
             set => SetProperty(ref _weatherHumidity, value);
         }
 
+        // ===== Today's Event =====
+        private string _todayEvent = "Nothing for today";
+        public string TodayEvent
+        {
+            get => _todayEvent;
+            set { _todayEvent = value; OnPropertyChanged(nameof(TodayEvent)); }
+        }
+
         // ── Media Commands ────────────────────────────────────────
        public void PlayPauseCommand()
 {
@@ -249,47 +257,108 @@ public void PreviousCommand()
             });
         }
 
-        private void OnWeatherUpdated(WeatherData data)
+        private void OnWeatherUpdated(object? sender, WeatherData data)
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(() =>
-            {
-                WeatherTemp = data.Temperature;
-                WeatherCondition = data.Condition;
-                WeatherIcon = data.Icon;
-                WeatherCity = data.City;
-                WeatherFeelsLike = data.FeelsLike;
-                WeatherHumidity = data.Humidity;
-            });
+            // keep your existing code inside unchanged
+            WeatherTemp = data.Temperature;
+            WeatherCondition = data.Condition;
+            WeatherIcon = data.Icon;
+            WeatherCity = data.City;
+            WeatherFeelsLike = data.FeelsLike;
+            WeatherHumidity = data.Humidity;
         }
+        // ===== Battery Properties =====
+private int _batteryPercentage;
+public int BatteryPercentage
+{
+    get => _batteryPercentage;
+    set { _batteryPercentage = value; OnPropertyChanged(nameof(BatteryPercentage)); OnPropertyChanged(nameof(BatteryText)); OnPropertyChanged(nameof(BatteryIcon)); OnPropertyChanged(nameof(BatteryColor)); }
+}
 
+private bool _isCharging;
+public bool IsCharging
+{
+    get => _isCharging;
+    set { _isCharging = value; OnPropertyChanged(nameof(IsCharging)); OnPropertyChanged(nameof(BatteryIcon)); OnPropertyChanged(nameof(BatteryColor)); }
+}
+
+private bool _isBatteryAvailable;
+public bool IsBatteryAvailable
+{
+    get => _isBatteryAvailable;
+    set { _isBatteryAvailable = value; OnPropertyChanged(nameof(IsBatteryAvailable)); }
+}
+
+public string BatteryText => $"{BatteryPercentage}%";
+
+public string BatteryIcon
+{
+    get
+    {
+        if (IsCharging)
+        {
+            // Charging icons — battery with lightning bolt
+            if (BatteryPercentage >= 90) return "\uEBB5"; // charging full
+            if (BatteryPercentage >= 70) return "\uEBB4";
+            if (BatteryPercentage >= 50) return "\uEBB3";
+            if (BatteryPercentage >= 30) return "\uEBB2";
+            if (BatteryPercentage >= 15) return "\uEBB1";
+            return "\uEBB0";                              // low charging
+        }
+        else
+        {
+            // Normal battery icons
+            if (BatteryPercentage >= 90) return "\uEBAA"; // full
+            if (BatteryPercentage >= 70) return "\uEBA9";
+            if (BatteryPercentage >= 50) return "\uEBA8";
+            if (BatteryPercentage >= 30) return "\uEBA7";
+            if (BatteryPercentage >= 15) return "\uEBA6";
+            return "\uEBA5";                              // empty / critical
+        }
+    }
+}
+
+public string BatteryColor
+{
+    get
+    {
+        if (BatteryPercentage <= 15) return "#FFFF453A"; // red at critical
+        if (BatteryPercentage <= 30) return "#FFFF9F0A"; // orange at low
+        return "#FF30D158";                              // green above 30%
+    }
+}
         private void UpdateClock()
         {
             var now = DateTime.Now;
             CurrentTime = now.ToString("hh:mm tt");
             TodayDay = now.Day.ToString();
             TodayDayOfWeek = now.DayOfWeek.ToString()[..3].ToUpper();
-            CurrentMonth = now.ToString("MMM yyyy");
+            CurrentMonth = now.ToString("MMM");   // Just "Aug" instead of "Aug 2026"
         }
 
         public void BuildCalendarDays()
-        {
-            CalendarDays.Clear();
-            var today = DateTime.Today;
+{
+    CalendarDays.Clear();
+    var today = DateTime.Today;
 
-            for (int offset = -3; offset <= 3; offset++)
-            {
-                var day = today.AddDays(offset);
-                CalendarDays.Add(new CalendarDay
-                {
-                    Day = day.Day,
-                    DayOfWeekShort = day.DayOfWeek.ToString()[..3].ToUpper(),
-                    IsToday = offset == 0,
-                    IsWeekend = day.DayOfWeek == DayOfWeek.Saturday
-                              || day.DayOfWeek == DayOfWeek.Sunday,
-                    IsCurrentMonth = day.Month == today.Month
-                });
-            }
-        }
+    // Show 7 days starting from 3 days before today
+    for (int offset = -3; offset <= 3; offset++)
+    {
+        var day = today.AddDays(offset);
+        var dayName = day.DayOfWeek.ToString();
+
+        CalendarDays.Add(new CalendarDay
+        {
+            Day = day.Day,
+            DayOfWeekShort = dayName[..3].ToUpper(),
+            DayOfWeekLetter = dayName[..1].ToUpper(),  // Single letter: M, T, W, etc.
+            IsToday = offset == 0,
+            IsWeekend = day.DayOfWeek == DayOfWeek.Saturday
+                      || day.DayOfWeek == DayOfWeek.Sunday,
+            IsCurrentMonth = day.Month == today.Month
+        });
+    }
+}
 
         private static string GetFriendlyAppName(string raw)
         {
@@ -325,6 +394,11 @@ public void PreviousCommand()
         {
             if (Equals(field, value)) return;
             field = value;
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+        private void OnPropertyChanged([CallerMemberName] string? name = null)
+        {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }

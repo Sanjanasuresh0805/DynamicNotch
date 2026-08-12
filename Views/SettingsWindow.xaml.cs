@@ -1,40 +1,46 @@
 using System.Windows;
 using System.Windows.Input;
-using DynamicNotch.Services;
 
-namespace DynamicNotch.Views;
-
-public partial class SettingsWindow : Window
+namespace DynamicNotch.Views
 {
-    public SettingsWindow()
+    public partial class SettingsWindow : Window
     {
-        InitializeComponent();
-        StartupCheckBox.IsChecked = StartupService.IsEnabled();
-    }
+        public SettingsWindow()
+        {
+            InitializeComponent();
+            PositionNearNotch();
+        }
 
-    private void Window_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-    {
-        DragMove();
-    }
+        /// <summary>
+        /// Positions the settings window to the right of the expanded notch,
+        /// close to the gear button.
+        /// </summary>
+        private void PositionNearNotch()
+        {
+            // Get primary screen width
+            double screenWidth = SystemParameters.PrimaryScreenWidth;
 
-    private void Close_Click(object sender, RoutedEventArgs e)
-    {
-        var settings = SettingsService.Load();
-        settings.RunAtStartup = StartupCheckBox.IsChecked == true;
-        settings.ShowMedia = MediaCheckBox.IsChecked == true;
-        settings.ShowCalendar = CalendarCheckBox.IsChecked == true;
-        settings.ShowMirror = MirrorCheckBox.IsChecked == true;
-        SettingsService.Save(settings);
-        Close();
-    }
+            // Notch is centered horizontally at top, expanded width = 680
+            double notchExpandedWidth = 680;
+            double notchLeftEdge = (screenWidth - notchExpandedWidth) / 2;
+            double notchRightEdge = notchLeftEdge + notchExpandedWidth;
 
-    private void StartupCheckBox_Changed(object sender, RoutedEventArgs e)
-    {
-        StartupService.SetEnabled(StartupCheckBox.IsChecked == true);
-    }
+            // Place settings window right beside the notch (8px gap)
+            Left = notchRightEdge + 8;
 
-    private void Quit_Click(object sender, RoutedEventArgs e)
-    {
-        Application.Current.Shutdown();
+            // Vertically align near the top of the notch (notch top = 6)
+            Top = 6;
+        }
+
+        private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (e.LeftButton == MouseButtonState.Pressed)
+                DragMove();
+        }
+
+        private void CloseButton_Click(object sender, RoutedEventArgs e) => Close();
+
+        private void QuitButton_Click(object sender, RoutedEventArgs e)
+            => System.Windows.Application.Current.Shutdown();
     }
 }

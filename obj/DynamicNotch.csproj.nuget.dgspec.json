@@ -55,10 +55,6 @@
             "Hardcodet.NotifyIcon.Wpf": {
               "target": "Package",
               "version": "[1.1.0, )"
-            },
-            "Microsoft.Xaml.Behaviors.Wpf": {
-              "target": "Package",
-              "version": "[1.1.77, )"
             }
           },
           "imports": [
@@ -85,7 +81,7 @@
             "Microsoft.Windows.SDK.NET.Ref.Windows": {
               "privateAssets": "all"
             },
-            "Microsoft.WindowsDesktop.App.WPF": {
+            "Microsoft.WindowsDesktop.App": {
               "privateAssets": "none"
             }
           },

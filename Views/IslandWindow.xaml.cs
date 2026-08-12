@@ -19,18 +19,18 @@ namespace DynamicNotch.Views
     public partial class IslandWindow : Window
     {
         // ── Layout constants ───────────────────────────────────────
-        private const double CollapsedWidth  = 180;
-        private const double CollapsedHeight = 30;
-        private const double ExpandedWidth   = 620;
-        private const double ExpandedHeight  = 130;
+        private const double CollapsedWidth  = 220;
+        private const double CollapsedHeight = 40;
+        private const double ExpandedWidth   = 680;
+        private const double ExpandedHeight  = 140;
         private const int    ExpandDelayMs   = 120;
-        private const int    CollapseDelayMs = 2000;
+        private const int    CollapseDelayMs = 800;
 
         // ── State flags ────────────────────────────────────────────
         private bool _isExpanded          = false;
         private bool _isAnimating         = false;
-        private bool _isHiddenByFullscreen = false;   // auto-hide state
-        private bool _isHiddenByHotkey     = false;   // manual toggle state
+        private bool _isHiddenByFullscreen = false;
+        private bool _isHiddenByHotkey     = false;
 
         // ── ViewModel ──────────────────────────────────────────────
         private readonly IslandViewModel _vm;
@@ -44,6 +44,11 @@ namespace DynamicNotch.Views
         // ── Services ───────────────────────────────────────────────
         private readonly FullscreenDetectorService _fullscreenDetector;
         private readonly GlobalHotkeyService _hotkeyService;
+        private readonly BatteryService _batteryService;
+        private readonly EventsService _eventsService;
+
+        // ── Equalizer animation ────────────────────────────────────
+        private Storyboard? _equalizerStoryboard;
 
         // ── Webcam fields ──────────────────────────────────────────
         private MediaCapture?      _mediaCapture;
@@ -82,6 +87,12 @@ namespace DynamicNotch.Views
             _hotkeyService = new GlobalHotkeyService(hotkeyId: 9001);
             _hotkeyService.HotkeyPressed += OnHotkeyPressed;
 
+            _batteryService = new BatteryService();
+            _batteryService.BatteryUpdated += OnBatteryUpdated;
+
+            _eventsService = new EventsService();
+            _eventsService.EventUpdated += OnEventUpdated;
+
             // Apply Win32 window style + register hotkey once loaded
             Loaded += (s, e) =>
             {
@@ -99,6 +110,13 @@ namespace DynamicNotch.Views
                     (uint)KeyInterop.VirtualKeyFromKey(Key.N));
 
                 //_fullscreenDetector.Start();
+
+                // Start battery + events monitor
+                _batteryService.Start();
+                _eventsService.Start();
+
+                // Initialize equalizer animation state
+                UpdateEqualizerAnimation();
             };
 
             // ── Timers ──
@@ -115,6 +133,69 @@ namespace DynamicNotch.Views
             _topmostGuardTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(3) };
             _topmostGuardTimer.Tick += TopmostGuard_Tick;
             _topmostGuardTimer.Start();
+
+            // Watch IsPlaying to start/stop equalizer animation
+            _vm.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(IslandViewModel.IsPlaying))
+                {
+                    Dispatcher.Invoke(() => UpdateEqualizerAnimation());
+                }
+            };
+        }
+
+        // ─────────────────────────────────────────────────────────
+        // EQUALIZER ANIMATION
+        // ─────────────────────────────────────────────────────────
+        private void UpdateEqualizerAnimation()
+        {
+            if (_vm.IsPlaying)
+                StartEqualizerAnimation();
+            else
+                StopEqualizerAnimation();
+        }
+
+        private void StartEqualizerAnimation()
+        {
+            try
+            {
+                if (_equalizerStoryboard == null)
+                {
+                    _equalizerStoryboard = (Storyboard)Resources["EqualizerStoryboard"];
+                }
+                _equalizerStoryboard?.Begin(this, true);
+            }
+            catch { }
+        }
+
+        private void StopEqualizerAnimation()
+        {
+            try
+            {
+                _equalizerStoryboard?.Stop(this);
+            }
+            catch { }
+        }
+
+        // ─────────────────────────────────────────────────────────
+        // BATTERY UPDATE
+        // ─────────────────────────────────────────────────────────
+        private void OnBatteryUpdated(object? sender, BatteryEventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                _vm.BatteryPercentage = e.Percentage;
+                _vm.IsCharging = e.IsCharging;
+                _vm.IsBatteryAvailable = e.IsAvailable;
+            });
+        }
+
+        private void OnEventUpdated(object? sender, EventUpdatedEventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                _vm.TodayEvent = e.EventText;
+            });
         }
 
         // ─────────────────────────────────────────────────────────
@@ -124,7 +205,7 @@ namespace DynamicNotch.Views
         {
             double screenW = SystemParameters.PrimaryScreenWidth;
             Left = (screenW - CollapsedWidth) / 2;
-            Top = 0;
+            Top = 6;  // small gap so top curves are visible
         }
 
         // ─────────────────────────────────────────────────────────
@@ -134,11 +215,9 @@ namespace DynamicNotch.Views
         {
             Dispatcher.Invoke(() =>
             {
-                // Toggle the hotkey-hidden state
                 if (_isHiddenByHotkey)
                 {
                     _isHiddenByHotkey = false;
-                    // Only actually show if fullscreen isn't hiding us too
                     if (!_isHiddenByFullscreen)
                         ShowNotch();
                 }
@@ -165,7 +244,6 @@ namespace DynamicNotch.Views
                 else if (!isFullscreen && _isHiddenByFullscreen)
                 {
                     _isHiddenByFullscreen = false;
-                    // Only actually show if hotkey isn't hiding us
                     if (!_isHiddenByHotkey)
                         ShowNotch();
                 }
@@ -198,13 +276,12 @@ namespace DynamicNotch.Views
         {
             Visibility = Visibility.Visible;
 
-            // Reset to collapsed state
             if (_isExpanded)
             {
                 _isExpanded = false;
                 IslandBorder.Width  = CollapsedWidth;
                 IslandBorder.Height = CollapsedHeight;
-                IslandBorder.CornerRadius = new CornerRadius(0, 0, 15, 15);
+                IslandBorder.CornerRadius = new CornerRadius(18);
                 CollapsedContent.Opacity = 1;
                 ExpandedContent.Opacity  = 0;
 
@@ -217,7 +294,7 @@ namespace DynamicNotch.Views
             var slideDown = new DoubleAnimation
             {
                 From = -(CollapsedHeight + 5),
-                To = 0,
+                To = 6,
                 Duration = new Duration(TimeSpan.FromMilliseconds(350)),
                 EasingFunction = new BackEase
                 {
@@ -227,7 +304,6 @@ namespace DynamicNotch.Views
             };
             BeginAnimation(TopProperty, slideDown);
 
-            // Re-assert topmost
             var hwnd = new WindowInteropHelper(this).Handle;
             if (hwnd != IntPtr.Zero)
                 SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0,
@@ -242,6 +318,9 @@ namespace DynamicNotch.Views
             if (_isExpanded || _isAnimating) return;
             if (_isHiddenByFullscreen || _isHiddenByHotkey) return;
             _isAnimating = true;
+
+            CollapsedContent.Opacity = 1;
+            ExpandedContent.Opacity = 0;
 
             double screenW = SystemParameters.PrimaryScreenWidth;
             Width  = ExpandedWidth;
@@ -266,6 +345,9 @@ namespace DynamicNotch.Views
             if (_vm.IsMirrorActive) return;
             _isAnimating = true;
 
+            CollapsedContent.Opacity = 1;
+            ExpandedContent.Opacity = 0;
+
             var sb = (Storyboard)Resources["CollapseStoryboard"];
             sb.Completed += (s, e) =>
             {
@@ -273,7 +355,9 @@ namespace DynamicNotch.Views
                 _isAnimating = false;
                 _vm.IsExpanded = false;
 
-                IslandBorder.CornerRadius = new CornerRadius(0, 0, 15, 15);
+                CollapsedContent.Opacity = 1;
+                ExpandedContent.Opacity = 0;
+                IslandBorder.CornerRadius = new CornerRadius(18);
 
                 double screenW = SystemParameters.PrimaryScreenWidth;
                 Width  = CollapsedWidth;
@@ -487,9 +571,11 @@ namespace DynamicNotch.Views
             _topmostGuardTimer.Stop();
             _fullscreenDetector.Stop();
             _hotkeyService.Dispose();
+            _eventsService.Stop();
+            _batteryService.Stop();
+            StopEqualizerAnimation();
             StopWebcam();
             _vm.Cleanup();
-            Application.Current.Shutdown();
             base.OnClosed(e);
         }
     }

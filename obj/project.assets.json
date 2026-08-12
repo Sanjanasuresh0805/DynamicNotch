@@ -33,22 +33,6 @@
         "frameworkReferences": [
           "Microsoft.WindowsDesktop.App"
         ]
-      },
-      "Microsoft.Xaml.Behaviors.Wpf/1.1.77": {
-        "type": "package",
-        "compile": {
-          "lib/net6.0-windows7.0/Microsoft.Xaml.Behaviors.dll": {
-            "related": ".pdb;.xml"
-          }
-        },
-        "runtime": {
-          "lib/net6.0-windows7.0/Microsoft.Xaml.Behaviors.dll": {
-            "related": ".pdb;.xml"
-          }
-        },
-        "frameworkReferences": [
-          "Microsoft.WindowsDesktop.App.WPF"
-        ]
       }
     }
   },
@@ -106,35 +90,12 @@
         "lib/netcoreapp3.1/Hardcodet.NotifyIcon.Wpf.dll",
         "lib/netcoreapp3.1/Hardcodet.NotifyIcon.Wpf.xml"
       ]
-    },
-    "Microsoft.Xaml.Behaviors.Wpf/1.1.77": {
-      "sha512": "MCu674ZETgU18EbxfwIlRpUPJ02YbZenLsMCXTkpeA7KUBpXfFaOUDlEO+7UWu5AFnUoydg+aQENJkuaZPheMQ==",
-      "type": "package",
-      "path": "microsoft.xaml.behaviors.wpf/1.1.77",
-      "hasTools": true,
-      "files": [
-        ".nupkg.metadata",
-        ".signature.p7s",
-        "lib/net462/Design/Microsoft.Xaml.Behaviors.Design.dll",
-        "lib/net462/Design/Microsoft.Xaml.Behaviors.DesignTools.dll",
-        "lib/net462/Microsoft.Xaml.Behaviors.dll",
-        "lib/net462/Microsoft.Xaml.Behaviors.pdb",
-        "lib/net462/Microsoft.Xaml.Behaviors.xml",
-        "lib/net6.0-windows7.0/Design/Microsoft.Xaml.Behaviors.DesignTools.dll",
-        "lib/net6.0-windows7.0/Microsoft.Xaml.Behaviors.dll",
-        "lib/net6.0-windows7.0/Microsoft.Xaml.Behaviors.pdb",
-        "lib/net6.0-windows7.0/Microsoft.Xaml.Behaviors.xml",
-        "microsoft.xaml.behaviors.wpf.1.1.77.nupkg.sha512",
-        "microsoft.xaml.behaviors.wpf.nuspec",
-        "tools/Install.ps1"
-      ]
     }
   },
   "projectFileDependencyGroups": {
     "net8.0-windows10.0.22621.0": [
       "CommunityToolkit.Mvvm >= 8.2.2",
-      "Hardcodet.NotifyIcon.Wpf >= 1.1.0",
-      "Microsoft.Xaml.Behaviors.Wpf >= 1.1.77"
+      "Hardcodet.NotifyIcon.Wpf >= 1.1.0"
     ]
   },
   "packageFolders": {
@@ -191,10 +152,6 @@
           "Hardcodet.NotifyIcon.Wpf": {
             "target": "Package",
             "version": "[1.1.0, )"
-          },
-          "Microsoft.Xaml.Behaviors.Wpf": {
-            "target": "Package",
-            "version": "[1.1.77, )"
           }
         },
         "imports": [
@@ -221,7 +178,7 @@
           "Microsoft.Windows.SDK.NET.Ref.Windows": {
             "privateAssets": "all"
           },
-          "Microsoft.WindowsDesktop.App.WPF": {
+          "Microsoft.WindowsDesktop.App": {
             "privateAssets": "none"
           }
         },

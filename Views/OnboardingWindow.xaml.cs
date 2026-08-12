@@ -1,16 +1,17 @@
 using System.Windows;
 
-namespace DynamicNotch.Views;
-
-public partial class OnboardingWindow : Window
+namespace DynamicNotch.Views
 {
-    public OnboardingWindow()
+    public partial class OnboardingWindow : Window
     {
-        InitializeComponent();
-    }
+        public OnboardingWindow()
+        {
+            InitializeComponent();
+        }
 
-    private void GetStarted_Click(object sender, RoutedEventArgs e)
-    {
-        Close();
+        private void GetStarted_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }
