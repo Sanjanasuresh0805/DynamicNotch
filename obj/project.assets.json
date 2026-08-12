@@ -99,26 +99,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Mahalakshmi\\.nuget\\packages\\": {}
+    "C:\\Users\\sathv\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Mahalakshmi\\Downloads\\Sanjana\\DynamicNotch\\DynamicNotch.csproj",
+      "projectUniqueName": "C:\\Users\\sathv\\Downloads\\best dynamic notch\\DynamicNotch\\DynamicNotch.csproj",
       "projectName": "DynamicNotch",
-      "projectPath": "C:\\Users\\Mahalakshmi\\Downloads\\Sanjana\\DynamicNotch\\DynamicNotch.csproj",
-      "packagesPath": "C:\\Users\\Mahalakshmi\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Mahalakshmi\\Downloads\\Sanjana\\DynamicNotch\\obj\\",
+      "projectPath": "C:\\Users\\sathv\\Downloads\\best dynamic notch\\DynamicNotch\\DynamicNotch.csproj",
+      "packagesPath": "C:\\Users\\sathv\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\sathv\\Downloads\\best dynamic notch\\DynamicNotch\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Mahalakshmi\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\sathv\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0-windows10.0.22621.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -167,8 +165,24 @@
         "warn": true,
         "downloadDependencies": [
           {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[8.0.29, 8.0.29]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.win-x64",
+            "version": "[8.0.29, 8.0.29]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[8.0.29, 8.0.29]"
+          },
+          {
             "name": "Microsoft.Windows.SDK.NET.Ref",
             "version": "[10.0.22621.57, 10.0.22621.57]"
+          },
+          {
+            "name": "Microsoft.WindowsDesktop.App.Ref",
+            "version": "[8.0.29, 8.0.29]"
           }
         ],
         "frameworkReferences": {

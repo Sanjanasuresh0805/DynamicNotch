@@ -1,6 +1,7 @@
 <Window x:Class="DynamicNotch.Views.IslandWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent"
@@ -279,10 +280,10 @@
                                 <TextBlock FontFamily="Segoe MDL2 Assets" FontSize="15">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
-                                            <Setter Property="Text" Value="&#xE769;"/>
+                                            <Setter Property="Text" Value="&#xE768;"/>
                                             <Style.Triggers>
                                                 <DataTrigger Binding="{Binding IsPlaying}" Value="True">
-                                                    <Setter Property="Text" Value="&#xE768;"/>
+                                                    <Setter Property="Text" Value="&#xE769;"/>
                                                 </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
@@ -296,6 +297,7 @@
                                            FontFamily="Segoe MDL2 Assets"
                                            FontSize="13"/>
                             </Button>
+                            
                         </StackPanel>
                     </StackPanel>
                 </Grid>
