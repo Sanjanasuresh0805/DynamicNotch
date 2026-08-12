@@ -11,7 +11,6 @@
 
 <br/>
 
-<img src="https://img.shields.io/badge/Built%20with-❤️%20by%20Sanjana-ff69b4?style=for-the-badge" alt="Built with love by Sanjana"/>
 
 <br/><br/>
 
